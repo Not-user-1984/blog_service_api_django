@@ -1,14 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PostViewSet, BlogViewSet, SubscriptionViewSet, PersonalFeedViewSet
 
-from api.views import (BlogListCreateView, CheckPostRead, MarkPostAsRead,
-                       PersonalFeedView, PostListCreateView,
-                       SubscriptionListCreateView)
+router = DefaultRouter()
+router.register(r'posts', PostViewSet, basename='post')
+router.register(r'blogs', BlogViewSet, basename='blog')
+router.register(r'subscriptions', SubscriptionViewSet, basename='subscription')
+router.register(r'personal_feed', PersonalFeedViewSet, basename='personal-feed')
 
 urlpatterns = [
-    path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
-    path('posts/', PostListCreateView.as_view(), name='post-list-create'),
-    path('subscriptions/', SubscriptionListCreateView.as_view(), name='subscription-list-create'),
-    path('mark_post_as_read/', MarkPostAsRead.as_view(), name='mark-post-as-read'),
-    path('check_post_read/', CheckPostRead.as_view(), name='check-post-read'),
-    path('personal_feed/', PersonalFeedView.as_view(), name='personal-feed'),
+    path('', include(router.urls)),
 ]
