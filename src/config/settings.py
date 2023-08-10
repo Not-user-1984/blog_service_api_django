@@ -1,16 +1,10 @@
 from pathlib import Path
 import os
-import sys
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from dotenv import load_dotenv
 
-
-current_directory = os.path.dirname(os.path.abspath(__file__))
-project_directory = os.path.dirname(current_directory)
-sys.path.append(project_directory)
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve()
 SECRET_KEY = 'django-insecure-)i4z7ju9gc+4h=y46l6ok)e9dge0dp_sbja37h&(3u-f7_=zxl'
 
 load_dotenv()
@@ -26,6 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog_service',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -96,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
