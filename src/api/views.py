@@ -2,7 +2,7 @@ from django.core.cache import cache
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from subscriptions_logic import subscribe_logic, unsubscribe_logic
+from api.subscriptions_logic import subscribe_logic, unsubscribe_logic
 from api.serializers import (BlogSerializer, PostSerializer,
                              SubscriptionSerializer)
 from blog_service.models import Blog, Post, Subscription
@@ -71,7 +71,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
 class PersonalFeedViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = PageNumberPagination 
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         user = self.request.user

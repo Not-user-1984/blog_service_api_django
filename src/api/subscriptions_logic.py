@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from subscriptions_utlit import (check_cache_and_return_response,
+from api.subscriptions_utlit import (check_cache_and_return_response,
                                  delete_subscription, get_cache_key,
                                  perform_subscription, set_cache
                                  )
