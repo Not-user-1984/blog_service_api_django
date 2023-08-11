@@ -12,8 +12,8 @@ class Blog(models.Model):
 
 class Post(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    text = models.CharField()
+    title = models.CharField(max_length=255,blank=False)
+    text = models.TextField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -26,6 +26,9 @@ class Subscription(models.Model):
                                     related_name='subscriptions'
                                     )
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.blog
 
 
 class PostRead(models.Model):

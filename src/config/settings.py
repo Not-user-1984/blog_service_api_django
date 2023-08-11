@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+from datetime import timedelta
+from celery.schedules import crontab
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from dotenv import load_dotenv
@@ -39,15 +41,25 @@ ROOT_URLCONF = 'config.urls'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'
 
+
+CELERY_BEAT_SCHEDULE = {
+    'send_daily_post_summary': {
+        'task': 'blog_service.tasks.send_daily_post_summary',
+        'schedule': crontab(minute='*/5'),
+    },
+}
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/2" 
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/2" 
+CELERY_TIMEZONE = 'UTC'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

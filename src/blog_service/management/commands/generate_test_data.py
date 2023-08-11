@@ -11,9 +11,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         blogs = Blog.objects.all()
 
-        for _ in range(500):  # Generate 500 users
+        for _ in range(500):
             username = fake.user_name()
-            while User.objects.filter(username=username).exists():  # Check if username already exists
+            while User.objects.filter(username=username).exists():
                 username = fake.user_name()
 
             email = fake.email()
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         for _ in range(1000):  # Generate 1000 records
             blog = fake.random_element(blogs)
             title = fake.sentence()
-            text = fake.paragraph()
+            text = fake.text(max_nb_chars=130) 
 
             Post.objects.create(
                 blog=blog,
@@ -36,6 +36,13 @@ class Command(BaseCommand):
                 text=text,
             )
 
+        try:
+            superuser = User.objects.get(username='admin1989')
+        except User.DoesNotExist:
+            raise Exception("Create a superuser with username 'admin1989' before running this command")
 
+        for _ in range(100):  # Generate 100 subscriptions for superuser
+            blog = fake.random_element(blogs)
+            blog.subscriptions.create(subscriber=superuser)
 
         self.stdout.write(self.style.SUCCESS('Successfully generated test data for Post model'))
