@@ -4,12 +4,13 @@ from api.subscriptions_utlit import (check_cache_and_return_response,
                                  delete_subscription, get_cache_key,
                                  perform_subscription, set_cache
                                  )
-
+from api.serializers import SubscriptionSerializer
 from blog_service.models import Subscription
 
 
-def subscribe_logic(user, blog_id, serializer):
+def subscribe_logic(user, blog_id):
     cache_key = get_cache_key(user.id, blog_id)
+
     response = check_cache_and_return_response(
         cache_key,
         'You are already subscribed to this blog.',
@@ -25,7 +26,7 @@ def subscribe_logic(user, blog_id, serializer):
             status=status.HTTP_400_BAD_REQUEST)
     new_subscription = perform_subscription(user, blog_id)
     set_cache(cache_key, 'subscribed')
-    serialized_data = serializer(new_subscription).data
+    serialized_data = SubscriptionSerializer(new_subscription).data
     return Response(serialized_data, status=status.HTTP_201_CREATED)
 
 

@@ -1,5 +1,7 @@
 from django.core.cache import cache
 from rest_framework.response import Response
+from blog_service.models import Subscription
+
 
 def get_cache_key(user_id, blog_id):
     return f'subscribe:{user_id}:{blog_id}'
@@ -13,7 +15,7 @@ def check_cache_and_return_response(cache_key, message, status_code):
 
 
 def set_cache(cache_key, value):
-    cache.set(cache_key, value, 3600)  # Save result in cache for an hour
+    cache.set(cache_key, value, 3600)
 
 
 def perform_subscription(user, blog_id):
