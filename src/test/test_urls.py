@@ -38,9 +38,10 @@ def test_unsubscribe_from_blog(client, user, subscription):
     assert not Subscription.objects.filter(subscriber=user, blog=subscription.blog).exists()
 
 
+
 @pytest.mark.django_db
 def test_view_blog_posts(client, blog, post):
-    url = reverse('blog-posts', kwargs={'pk': blog.pk})
+    url = reverse('blog-detail', kwargs={'pk': blog.pk})
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
 
@@ -58,9 +59,3 @@ def test_view_all_blogs(client):
     url = reverse('blog-list')
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
-
-
-
-
-
-

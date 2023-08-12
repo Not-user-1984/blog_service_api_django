@@ -31,6 +31,7 @@ def subscription(user, blog):
 def post_read(user, post):
     return PostRead.objects.create(user=user, post=post, is_read=False)
 
+
 @pytest.fixture
 def post(blog):
     return Post.objects.create(

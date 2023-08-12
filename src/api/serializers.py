@@ -7,11 +7,20 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
+    def validate(self, data):
+        title = data.get('title')
+        text = data.get('text')
+
+        if Post.objects.filter(title=title, text=text).exists():
+            raise serializers.ValidationError("Post with the same title and text already exists.")
+
+        return data
+
 
 class PostBlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ("title","text")
+        fields = ("title", "text",)
 
 
 class BlogSerializer(serializers.ModelSerializer):

@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from django.conf import settings
 from api.serializers import (BlogSerializer, PostReadSerializer,
                              PostSerializer, SubscriptionSerializer)
 from api.subscriptions_logic import subscribe_logic, unsubscribe_logic
@@ -99,5 +99,5 @@ class PersonalFeedViewSet(viewsets.ModelViewSet):
         unread_posts = Post.objects.filter(
             Q(blog__in=subscribed_blogs) &
             ~Q(postread__user=user, postread__is_read=True)
-        ).order_by('-created_at')
+        ).order_by('-created_at')[:settings.MAX_UNREAD_POSTS_LIMIT]
         return unread_posts
