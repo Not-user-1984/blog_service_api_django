@@ -8,10 +8,10 @@
     docker exec -it django python manage.py makemigrations
     docker exec -it django python manage.py migrate
     docker exec -it django python manage.py createsuperuser --username=admin1989 --email=test@test.com
-    (Делаем супер пользователя именно с этим названием
+    (Делаем супер пользователя именно с этим ником
     Нужно для генерации базы данных, делает на него подписки)
     docker exec -it django python manage.py generate_test_data
-    docker exec -it django python manage.py pytest
+    docker exec -it django  pytest
 ```
 ## Доступные API endpoints
 
