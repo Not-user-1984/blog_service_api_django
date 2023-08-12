@@ -7,21 +7,27 @@ from rest_framework.test import APIClient
 
 @pytest.mark.django_db
 def test_get_last_10_posts(user):
+    """
+    Тест получения последних 10 постов из блога.
+    """
     blog = Blog.objects.get(user=user)
     for i in range(10):
         Post.objects.create(
-            blog=blog, title=f"Post {i}", text=f"This is post {i}")
+            blog=blog, title=f"Пост {i}", text=f"Это пост {i}")
 
     serializer = BlogSerializer(blog)
     last_10_posts = serializer.get_last_10_posts(blog)
 
     assert len(last_10_posts) == 5
-    assert last_10_posts[0]['title'] == "Post 9"
-    assert last_10_posts[4]['title'] == "Post 5"
+    assert last_10_posts[0]['title'] == "Пост 9"
+    assert last_10_posts[4]['title'] == "Пост 5"
 
 
 @pytest.mark.django_db
 def test_cannot_create_duplicate_post(blog, user):
+    """
+    Тест на невозможность создания дубликата поста.
+    """
     client = APIClient()
     client.force_authenticate(user=user)
 
@@ -29,8 +35,8 @@ def test_cannot_create_duplicate_post(blog, user):
 
     data = {
         'blog': blog.id,
-        'title': 'Test Post',
-        'text': 'This is a test post',
+        'title': 'Тестовый пост',
+        'text': 'Это тестовый пост',
     }
 
     response = client.post('/api/posts/', data, format='json')
@@ -38,7 +44,7 @@ def test_cannot_create_duplicate_post(blog, user):
     assert response.status_code == status.HTTP_201_CREATED
     assert Post.objects.count() == initial_post_count + 1
 
-    # Try creating a duplicate post
+    # Попробовать создать дубликат поста
     response = client.post('/api/posts/', data, format='json')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST

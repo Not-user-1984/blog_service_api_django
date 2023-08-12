@@ -1,7 +1,7 @@
-from pathlib import Path
 import os
-import sys
-from datetime import timedelta
+import random
+from pathlib import Path
+
 from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,24 +42,24 @@ ROOT_URLCONF = 'config.urls'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": 'redis://redis:6379/1',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
 
-
+def random_minute():
+    return random.randint(0, 59)
 
 CELERY_BEAT_SCHEDULE = {
     'send_daily_post_summary': {
         'task': 'blog_service.tasks.send_daily_post_summary',
-        'schedule': crontab(minute='*/5'),
+        'schedule': crontab(hour='17-19', minute=random_minute(), day_of_week='mon-fri'),
     },
 }
-
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/2" 
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/2" 
+CELERY_BROKER_URL = 'redis://redis:6379/2'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/2'
 CELERY_TIMEZONE = 'UTC'
 TEMPLATES = [
     {
@@ -79,10 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
@@ -93,16 +89,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
-
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

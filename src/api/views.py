@@ -13,12 +13,20 @@ from blog_service.models import Blog, Post, PostRead, Subscription
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    """
+    Вьюсет для модели Post.
+    Позволяет маркировать посты как прочитанные
+    и проверять их статус прочтения.
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = PageNumberPagination
 
     @action(detail=True, methods=['post'])
     def mark_as_read(self, request, pk=None):
+        """
+        Маркирует пост как прочитанный.
+        """
         post = self.get_object()
         user = request.user
         cache_key = f'post_read:{user.id}:{post.id}'
@@ -41,6 +49,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def check_read_status(self, request, pk=None):
+        """
+        Проверяет статус прочтения поста.
+        """
         post = self.get_object()
         user = request.user
         cache_key = f'post_read:{user.id}:{post.id}'
@@ -59,6 +70,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class BlogViewSet(viewsets.ModelViewSet):
+    """
+    Вьюсет для модели Blog. Позволяет подписываться и отписываться от блогов.
+    """
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
@@ -82,11 +96,19 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
+    """
+    Вьюсет для модели Subscription.
+    """
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
 
 
 class PersonalFeedViewSet(viewsets.ModelViewSet):
+    """
+    Вьюсет для получения персональной
+    ленты пользователя с непрочитанными постами.
+    """
+
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = PageNumberPagination

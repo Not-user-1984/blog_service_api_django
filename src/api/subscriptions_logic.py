@@ -6,6 +6,9 @@ from blog_service.models import Subscription
 
 
 def subscribe_logic(user, blog_id):
+    """
+    Логика подписки пользователя на блог.
+    """
     existing_subscription = Subscription.objects.filter(
         subscriber=user, blog_id=blog_id).exists()
     if existing_subscription:
@@ -20,6 +23,9 @@ def subscribe_logic(user, blog_id):
 
 
 def unsubscribe_logic(user, blog_id):
+    """
+    Логика отписки пользователя от блога.
+    """
     existing_subscription = Subscription.objects.filter(
         subscriber=user,
         blog_id=blog_id)

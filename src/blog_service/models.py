@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Blog(models.Model):
-    """Модель для представления блога в системе."""    
+    """Модель для представления блога в системе."""
     name = models.CharField(max_length=140)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

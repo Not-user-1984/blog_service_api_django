@@ -6,5 +6,6 @@ from .models import Blog
 
 @receiver(post_save, sender=User)
 def create_personal_blog(sender, instance, created, **kwargs):
+    """Создает персональный блог при регистрации нового пользователя."""
     if created:
         Blog.objects.create(name=f"{instance.username}'s Blog", user=instance)
