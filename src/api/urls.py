@@ -8,6 +8,8 @@ router.register(r'blogs', BlogViewSet, basename='blog')
 router.register(r'subscriptions', SubscriptionViewSet, basename='subscription')
 router.register(r'personal_feed', PersonalFeedViewSet, basename='personal-feed')
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

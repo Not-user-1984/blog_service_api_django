@@ -1,12 +1,13 @@
 from pathlib import Path
 import os
+import sys
 from datetime import timedelta
 from celery.schedules import crontab
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve()
+# BASE_DIR = Path(__file__).resolve()
 SECRET_KEY = 'django-insecure-)i4z7ju9gc+4h=y46l6ok)e9dge0dp_sbja37h&(3u-f7_=zxl'
 
 load_dotenv()
@@ -44,7 +45,7 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
 }
 
@@ -82,17 +83,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('POSTGRES_DB', default='db'),
-        'USER': os.getenv('POSTGRES_USER', default='postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': os.getenv('POSTGRES_SERVER', default='localhost'),
-        'PORT': os.getenv('DB_PORT', default='5432')
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+#         'NAME': os.getenv('POSTGRES_DB', default='db'),
+#         'USER': os.getenv('POSTGRES_USER', default='postgres'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+#         'HOST': os.getenv('POSTGRES_SERVER', default='localhost'),
+#         'PORT': os.getenv('DB_PORT', default='5432')
+#     },
+# }
 
+DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
