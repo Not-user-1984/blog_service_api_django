@@ -2,6 +2,7 @@
 # Запуск
 
 ```bash
+    git clone git@github.com:Not-user-1984/testovoe_y_p.git
     cd infra_yp/dev
     docker compose up -d --build
     docker exec -it django python manage.py makemigrations
